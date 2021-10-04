@@ -1,0 +1,23 @@
+
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+  <div id="products">
+    <div class="products">
+      <h1>Products</h1>
+      <div class="row">
+        {% for product in products %}
+          <div class="col-4">
+            {% include "products/item.html" %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'index.js' %}"></script>{% endblock %}

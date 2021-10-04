@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from posts.views import index as posts_index, register
+from shop.views import products_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', posts_index, name='posts_index'),
     path('register/', register, name='register'),
     path('api/', include('api.urls', namespace='api')),
+    path('products/', products_view, name='products'),
 ]
 
 if settings.DEBUG:

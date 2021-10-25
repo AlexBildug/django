@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d-mv4v@u8%qt$d6_%ov7_gs^*-7p(r3df)&jpn6n(3w^9f)3ul
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'posts',
     'shop',
-
+    'django_rq',
 ]
 
 MIDDLEWARE = [
@@ -80,12 +80,14 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = dict(default={
+    "ENGINE": "django.db.backends.postgresql",
+    "NAME": os.getenv("DB_NAME", "django"),
+    "USER": os.getenv("DB_USER", "django"),
+    "PASSWORD": os.getenv("DB_PASSWORD", "django"),
+    "HOST": os.getenv("DB_HOST", "localhost"),
+    "PORT": os.getenv("DB_PORT", 5432),
+})
 
 
 # Password validation
@@ -171,4 +173,13 @@ LOGGING = {
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+}
+
+RQ_QUEUES = {
+   "default": {
+       "HOST": "localhost",
+       "PORT": 6379,
+       "DB": 0,
+       "DEFAULT_TIMEOUT": 360,
+   },
 }
